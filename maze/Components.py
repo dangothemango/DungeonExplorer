@@ -51,9 +51,14 @@ class Node:
     def __str__(self):
         return "x: " +str(self.x) + " y: " +str(self.y)
 
-    def __eq__(self, m):
-        return (self.x == m.x and self.y == m.y)
+    def __eq__(self, other):
+        return (self.x == other.x and self.y == other.y)
 
+    def __lt__(self, other):
+        return self.distance<other.distance
+
+    def __gt__(self, other):
+        return self.distance>other.distance
         
 if __name__ == "__main__":
     n = Node(3,4)

@@ -35,27 +35,44 @@ class Maze:
     def generatePaths(self):
         queue = [self.startNode,self.endNode]
         visited = [self.startNode,self.endNode]
+        collisions = []
         while len(queue)>0:
             n = queue.pop(0)
             for i in range (4):
                 m = self.getRandomAdjacent(n)
-                if (not visited.__contains__(m)):
+                if (m not in visited):
                     visited.append(m)
                     n.addEdge(m)
                     m.addEdge(n)
                     m.setDistance(n.distance+1)
                     queue.insert(0,m)
+                elif m.distance<0:
+                    collisions.append((n,m))
+
             if len(queue) == 0:
                 break
             n = queue.pop()
             for i in range (4):
                 m = self.getRandomAdjacent(n)
-                if (not visited.__contains__(m)):
+                if (m not in visited):
                     visited.append(m)
                     n.addEdge(m)
                     m.addEdge(n)
-                    m.setDistance(n.distance+1)
+                    m.setDistance(n.distance-1)
                     queue.append(m)
+                elif m.distance > 0:
+                    collisions.append((n, m))
+        maxCollision=(Node(-1,-1),Node(-1,-1),-1)
+        while len(collisions)>0:
+            collision = collisions.pop()
+            if abs(collision[0].distance)+abs(collision[1].distance)>maxCollision[2]:
+                maxCollision = (collision[0],collision[1],abs(collision[0].distance)+abs(collision[1].distance))
+        if (maxCollision[0] != Node(-1,-1) and maxCollision[1] != Node(-1,-1)):
+            maxCollision[0].addEdge(maxCollision[1])
+            maxCollision[1].addEdge(maxCollision[0])
+        else:
+            self.generatePaths()
+
 
     def getRandomAdjacent(self,n):
         direction = random.randint(0, 3)
