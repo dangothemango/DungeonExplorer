@@ -1,4 +1,4 @@
-class edge:
+class Edge:
     """The Edge class for the graph maze A -> B
     endNode is the destination node,
     Attributes[] is special features of this edge"""
@@ -10,7 +10,7 @@ class edge:
     def addAttribute(self,att):
         self.attributes.append(att)
 
-class node:
+class Node:
     """A graph maze node designed to hold:
     references to its edges
     special attributes
@@ -25,7 +25,7 @@ class node:
 
     def addEdge(self,m):
         if (self.isAdjacent(m)):
-            self.edges.append(edge(m))
+            self.edges.append(Edge(m))
 
     def addAttribute(self,att):
         self.attributes.append(att)
@@ -36,6 +36,18 @@ class node:
     def setDistance(self,dist):
         self.distance=dist
 
+    def hasRightEdge(self):
+        for edge in self.edges:
+            if edge.endNode.x == self.x + 1 and edge.endNode.y == self.y:
+                return True
+        return False
+
+    def hasBottomEdge(self):
+        for edge in self.edges:
+            if edge.endNode.x == self.x and edge.endNode.y == self.y+1:
+                return True
+        return False
+
     def __str__(self):
         return "x: " +str(self.x) + " y: " +str(self.y)
 
@@ -44,9 +56,9 @@ class node:
 
         
 if __name__ == "__main__":
-    n = node(3,4)
-    m = node(4,4)
-    o = node(4,5)
+    n = Node(3,4)
+    m = Node(4,4)
+    o = Node(4,5)
     print('n:',n,'\nm:',m,'\no:',o)
     m.addEdge(m)
     m.addEdge(n)

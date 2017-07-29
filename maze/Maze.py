@@ -1,19 +1,19 @@
 import random
-from maze.Components import node,edge
+from maze.Components import Node
 
-class maze:
+class Maze:
     """The actual maze object. contains a list of nodes and functions for generation"""
 
     def __init__(self,width,height):
         self.width = width
         self.height = height
         self.nodes=[]
-        self.startNode = self.endNode = node(-1, -1)
+        self.startNode = self.endNode = Node(-1, -1)
 
         for x in range (width):
             column = []
             for y in range (height):
-                column.append(node(x,y))
+                column.append(Node(x,y))
             self.nodes.append(column)
 
         self.setStartEnd()
@@ -37,7 +37,6 @@ class maze:
         visited = [self.startNode,self.endNode]
         while len(queue)>0:
             n = queue.pop(0)
-            print (n)
             for i in range (4):
                 m = self.getRandomAdjacent(n)
                 if (not visited.__contains__(m)):
@@ -49,7 +48,6 @@ class maze:
             if len(queue) == 0:
                 break
             n = queue.pop()
-            print (n)
             for i in range (4):
                 m = self.getRandomAdjacent(n)
                 if (not visited.__contains__(m)):
@@ -59,17 +57,9 @@ class maze:
                     m.setDistance(n.distance+1)
                     queue.append(m)
 
-        for column in self.nodes:
-            for node in column:
-                print(node, end="-----")
-                for edge in node.edges:
-                    print("(", edge.endNode.x, ",", edge.endNode.y, ")", end=":")
-                print()
-
     def getRandomAdjacent(self,n):
         direction = random.randint(0, 3)
-        newNodeCoords = (
-        (direction % 2) * (-1 if direction < 2 else 1), ((direction + 1) % 2) * (-1 if direction < 2 else 1))
+        newNodeCoords = ((direction % 2) * (-1 if direction < 2 else 1), ((direction + 1) % 2) * (-1 if direction < 2 else 1))
         newNodeCoords = (min(max(newNodeCoords[0] + n.x, 0), self.width - 1),
                          min(max(newNodeCoords[1] + n.y, 0), self.height - 1))
         return self.nodes[newNodeCoords[0]][newNodeCoords[1]]
@@ -78,4 +68,4 @@ class maze:
         return
 
 if __name__=='__main__':
-    m = maze(10,10)
+    maze = Maze(10,10)
