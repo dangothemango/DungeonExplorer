@@ -25,9 +25,8 @@ class Maze:
         self.generateAttributes()
 
     def setStartEnd(self):
-        self.startNode = self.nodes[random.randint(0,self.width-1)][random.randint(0,self.height-1)]
+        self.endNode = self.startNode = self.nodes[random.randint(0,self.width-1)][random.randint(0,self.height-1)]
         self.startNode.addAttribute('start')
-        self.endNode = self.nodes[random.randint(0, self.width - 1)][random.randint(0, self.height - 1)]
         while self.endNode == self.startNode:
             self.endNode = self.nodes[random.randint(0,self.width-1)][random.randint(0,self.height-1)]
         self.endNode.addAttribute('end')
